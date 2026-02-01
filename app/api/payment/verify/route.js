@@ -28,15 +28,16 @@ export async function POST(req) {
             razorpayOrderId: orderCreationId,
             razorpayPaymentId: razorpayPaymentId,
             status: 'paid',
-            userId: '1', // Mock user for now, really should get from session or pass in metadata
-            // User relation must exist. For now connecting to existing user or we need to ensure user exists
-            // Simpler for boilerplate: assume user exists or created via auth flow.
+            // userId is automatically set by the user relation below
             user: {
                 connectOrCreate: {
                     where: { email: 'user@example.com' },
                     create: { email: 'user@example.com', name: 'User' }
                 }
             }
+        },
+        include: {
+            user: true
         }
     });
 

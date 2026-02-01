@@ -8,7 +8,7 @@ declare global {
     }
 }
 
-export default function PaymentButton({ amount = 1000 }) { // 1000 = 1000 INR
+export default function PaymentButton({ amount = 1000, onSuccess }: { amount?: number, onSuccess?: (orderId: string) => void }) { // 1000 = 1000 INR
     const [isLoading, setIsLoading] = useState(false);
 
     const handlePayment = async () => {
@@ -43,6 +43,7 @@ export default function PaymentButton({ amount = 1000 }) { // 1000 = 1000 INR
                 const verifyData = await verifyRes.json();
                 if (verifyData.success) {
                     alert('Payment Successful');
+                    if (onSuccess) onSuccess(verifyData.orderId);
                 } else {
                     alert('Payment verification failed');
                 }
